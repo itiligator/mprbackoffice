@@ -1,6 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+// import Home from '../views/Home.vue'
+// import Login from "@/views/Login";
+import Logout from "@/components/Logout";
+
+import store from '@/store';
 
 Vue.use(VueRouter)
 
@@ -8,16 +12,34 @@ Vue.use(VueRouter)
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: () => import(/* webpackChunkName: "foo" */ '../views/Home.vue')
   },
   {
-    path: '/about',
-    name: 'About',
+    path: '/visits',
+    name: 'Visits',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+    component: () => import(/* webpackChunkName: "foo" */ '../views/Visits.vue')
+  },
+    {
+      path: '/clients',
+      name: 'Clients',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "foo" */ '../views/Clients.vue')
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: () => import(/* webpackChunkName: "foo" */ '../views/Login.vue')
+    },
+    {
+      path: '/logout',
+      name: 'Logout',
+      component: Logout,
+    },
 ]
 
 const router = new VueRouter({
@@ -25,5 +47,11 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.name !== 'Login' && !store.getters.isAuthenticated) next({ name: 'Login' });
+  else next();
+  // store.commit(HIDE_SIDEBAR);
+});
 
 export default router
