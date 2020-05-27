@@ -1,4 +1,16 @@
-export const VISIT_DOWNLOAD_ALL_FROM_SERVER = 'VISIT_DOWNLOAD_ALL_FROM_SERVER'; // загружает
+// геттеры
+export const VISITS_GET_ALL = 'VISITS_GET_ALL'; // отдает все визиты из хранилища
+
+// действия
+export const VISITS_DOWNLOAD_FROM_SERVER_BY_DATE = 'VISITS_DOWNLOAD_FROM_SERVER_BY_DATE'; // загружает выборку для
+// диапазона дат с сервера и полностью перезаписывает хранилище
+
+export const VISITS_UPLOAD_TO_SERVER = 'VISITS_UPLOAD_TO_SERVER';// отправляет данные визита на сервер
+
+
+// мутации
+export const VISITS_ERROR = 'VISITS_ERROR'; // пишет ошибку в state.visitStatus
+export const VISITS_WRITE_TO_VUEX = 'VISITS_WRITE_TO_VUEX'; // пишет ошибку в state.visitStatus
 
 
 // /* eslint-disable */

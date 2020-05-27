@@ -2,7 +2,7 @@
     <div id="app">
         <v-app id="inspire">
             <v-app id="inspire">
-                <v-navigation-drawer v-model="drawer" app :expand-on-hover="true" v-if="isAuthenticated">
+                <v-navigation-drawer permanent app :expand-on-hover="true" v-if="isAuthenticated">
                     <v-list nav>
                             <v-list-item
                                     v-for="link of links"
@@ -30,6 +30,8 @@
 
 <script>
 
+import {CLIENTS_DOWNLOAD_ALL_FROM_SERVER} from "@/store/actions/clients";
+
 export default {
   name: 'App',
 
@@ -53,5 +55,9 @@ export default {
             {title: 'Выйти из системы', icon: 'mdi-lock', url: '/logout'},
         ]
     }),
+
+    mounted() {
+        this.$store.dispatch(CLIENTS_DOWNLOAD_ALL_FROM_SERVER);
+    },
 };
 </script>
