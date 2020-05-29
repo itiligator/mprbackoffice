@@ -8,6 +8,10 @@
                 :single-select="true"
                 :search="search"
                 item-key="UUID"
+                no-data-text="Данные не загружены"
+                sort-by="id"
+                sort-desc
+                locale="ru-RU"
                 >
             <template v-slot:item.invoice="{ item }">
                 <v-icon> {{ okIcon(item.invoice) }} </v-icon>
@@ -50,17 +54,7 @@
 
                             <v-card-text>
                                 <v-container>
-<!--                                ввод клиента-->
-                                    <v-autocomplete
-                                    :items="clients"
-                                    v-model="editedVisit.clientINN"
-                                    item-text="name"
-                                    item-value="inn"
-                                    label="Клиент"
-                                    clearable
-                                    no-data-text="Нет результатов"
-                                    >
-                                    </v-autocomplete>
+                                    <!-- ввод клиента-->
                                     <v-autocomplete
                                             :items="clients"
                                             v-model="editedVisit.clientINN"
@@ -71,24 +65,31 @@
                                             no-data-text="Нет результатов"
                                     >
                                     </v-autocomplete>
-                                    {{ editedVisit }}
-                                    <!--                                    <v-row>-->
-                                    <!--                                        <v-col cols="12" sm="6" md="4">-->
-                                    <!--                                            <v-text-field v-model="editedItem.name" label="Dessert name"></v-text-field>-->
-                                    <!--                                        </v-col>-->
-                                    <!--                                        <v-col cols="12" sm="6" md="4">-->
-                                    <!--                                            <v-text-field v-model="editedItem.calories" label="Calories"></v-text-field>-->
-                                    <!--                                        </v-col>-->
-                                    <!--                                        <v-col cols="12" sm="6" md="4">-->
-                                    <!--                                            <v-text-field v-model="editedItem.fat" label="Fat (g)"></v-text-field>-->
-                                    <!--                                        </v-col>-->
-                                    <!--                                        <v-col cols="12" sm="6" md="4">-->
-                                    <!--                                            <v-text-field v-model="editedItem.carbs" label="Carbs (g)"></v-text-field>-->
-                                    <!--                                        </v-col>-->
-                                    <!--                                        <v-col cols="12" sm="6" md="4">-->
-                                    <!--                                            <v-text-field v-model="editedItem.protein" label="Protein (g)"></v-text-field>-->
-                                    <!--                                        </v-col>-->
-                                    <!--                                    </v-row>-->
+
+                                    <!-- ввод менеджера-->
+                                    <v-autocomplete
+                                            :items="managers"
+                                            v-model="editedVisit.managerID"
+                                            item-text="fullName"
+                                            item-value="ID"
+                                            label="Менеджер"
+                                            clearable
+                                            no-data-text="Нет результатов"
+                                    >
+                                    </v-autocomplete>
+
+                                    <!--                    менюшка выбора крайней даты-->
+
+                                        Дата визита:
+                                        <v-date-picker
+                                                label="Select a date"
+                                                v-model="editedVisit.date"
+                                                first-day-of-week="1"
+                                                scrollable
+                                                locale="ru-RU"
+                                        ></v-date-picker>
+                                    
+
                                 </v-container>
                             </v-card-text>
 
@@ -127,7 +128,7 @@
                             first-day-of-week="1"
                             no-title
                             scrollable
-                            locale="ru"
+                            locale="ru-RU"
                     ></v-date-picker>
                 </v-menu>
 <!--                    <v-spacer></v-spacer>-->
@@ -166,6 +167,7 @@
     import {CommonMethods} from "@/mixins/CommonMethods";
     import { uuid } from 'vue-uuid';
     import {CLIENTS_GET_ALL} from "@/store/actions/clients";
+    import {MANAGERS_GET_ALL} from "@/store/actions/managers";
 
     export default {
         name: "Visits",
@@ -206,7 +208,7 @@
                     processed: false,
                     invoice: false,
                     status: 0,
-                    managerID: '700',
+                    managerID: '',
                     author: null,
                 },
                 editedVisit: {
@@ -220,7 +222,7 @@
                     processed: false,
                     invoice: false,
                     status: 0,
-                    managerID: '700',
+                    managerID: '',
                     author: null,
                 },
             };
@@ -232,8 +234,8 @@
                         UUID: visit.UUID,
                         id: visit.id,
                         client: this.clientByINN(visit.clientINN).name,
-                        manager: this.managerByID(visit.managerID).fullName(),
-                        author: this.managerByID(visit.author).fullName(),
+                        manager: this.managerByID(visit.managerID).fullName,
+                        author: this.managerByID(visit.author).fullName,
                         status: this.visitStatusFromCode(visit.status),
                         processed: visit.processed,
                         invoice: visit.invoice,
@@ -249,6 +251,9 @@
             },
             clients() {
               return this.$store.getters[CLIENTS_GET_ALL];
+            },
+            managers() {
+                return this.$store.getters[MANAGERS_GET_ALL];
             },
         },
         methods: {
@@ -274,9 +279,7 @@
                         break;
                     default: return;
                 }
-                confirm('Отменить визит?') && this.$store.dispatch(VISITS_UPLOAD_TO_SERVER, {UUID: visit.UUID, status: nstatus});
-                this.delay(1500);
-                this.downloadVisits();
+                confirm('Отменить визит?') && this.$store.dispatch(VISITS_UPLOAD_TO_SERVER, {UUID: visit.UUID, status: nstatus}).then(() =>  this.downloadVisits());
             },
 
             close () {
@@ -289,9 +292,7 @@
 
             save () {
                 if (this.editedVisit.UUID === -1) {this.editedVisit.UUID = uuid.v4()}
-                this.$store.dispatch(VISITS_UPLOAD_TO_SERVER, this.editedVisit);
-                this.delay(500);
-                this.downloadVisits();
+                this.$store.dispatch(VISITS_UPLOAD_TO_SERVER, this.editedVisit).then(() =>  this.downloadVisits());
                 this.close()
             },
         },

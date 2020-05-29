@@ -7,13 +7,12 @@ import {
 } from "@/store/actions/managers";
 
 class Manager {
-    constructor(firstName, lastName, ID) {
+    constructor(firstName, lastName, ID, role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.ID = ID;
-    }
-    fullName() {
-        return this.firstName + ' ' + this.lastName;
+        this.role = role;
+        this.fullName = firstName + ' ' + lastName;
     }
 }
 
@@ -27,7 +26,7 @@ const getters = {
     [MANAGERS_GET_BY_ID]: (s) => (ID) => {
         const searchResult = s.managers.find((m) => m.ID === ID);
         if (typeof searchResult !== 'undefined') { return searchResult; }
-        return new Manager(ID, '', ID);
+        return new Manager(ID, '', ID, '');
     },
 };
 
@@ -52,7 +51,7 @@ const actions = {
 const mutations = {
     [MANAGERS_ERROR]: (s) => { s.managersStatus = 'error'; },
     [MANAGERS_WRITE_ALL_TO_VUEX]: (s, managersData) => { s.managers = managersData.map((m) =>{
-    return new Manager(m.firstName, m.lastName, m.ID)}
+    return new Manager(m.firstName, m.lastName, m.ID, m.role)}
     );},
 };
 

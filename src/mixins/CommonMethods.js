@@ -19,6 +19,14 @@ export const CommonMethods = {
                 default: return status;
             }
         },
+        managerRoleFromCode(role){
+            switch (role) {
+                case 'MPR': return 'МПР';
+                case '1S': return '1С';
+                case 'OFFICE': return 'Бэк-офис менеджер';
+                default: return role;
+            }
+        },
         okIcon(bool) {
             return bool ? 'mdi-checkbox-marked-circle' : '';
         },
