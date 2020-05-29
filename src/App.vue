@@ -31,6 +31,7 @@
 <script>
 
 import {CLIENTS_DOWNLOAD_ALL_FROM_SERVER} from "@/store/actions/clients";
+import {MANAGERS_DOWNLOAD_ALL_FROM_SERVER} from "@/store/actions/managers";
 
 export default {
   name: 'App',
@@ -58,6 +59,7 @@ export default {
 
     mounted() {
         this.$store.dispatch(CLIENTS_DOWNLOAD_ALL_FROM_SERVER);
+        this.$store.dispatch(MANAGERS_DOWNLOAD_ALL_FROM_SERVER);
     },
 };
 </script>

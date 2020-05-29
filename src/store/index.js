@@ -5,6 +5,7 @@ import clients from '@/store/modules/clients';
 // import goods from '@/store/modules/goods';
 // import checklists from '@/store/modules/checklists';
 import visits from './modules/visits';
+import managers from './modules/managers';
 import user from './modules/user';
 import auth from './modules/auth';
 
@@ -19,6 +20,7 @@ export default new Vuex.Store({
     visits,
     // goods,
     clients,
+    managers,
     // checklists,
     // order,
   },
