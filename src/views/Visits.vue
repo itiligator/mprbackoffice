@@ -43,7 +43,7 @@
                             vertical
                     ></v-divider>
 <!--                    кнопочка Новый визит-->
-                    <v-dialog v-model="editDialog" max-width="500px" persistent>
+                    <v-dialog v-model="editDialog" max-width="840px" persistent>
                         <template v-slot:activator="{ on }">
                             <v-btn color="primary" dark v-on="on">Добавить визит</v-btn>
                         </template>
@@ -54,42 +54,53 @@
 
                             <v-card-text>
                                 <v-container>
-                                    <!-- ввод клиента-->
-                                    <v-autocomplete
-                                            :items="clients"
-                                            v-model="editedVisit.clientINN"
-                                            item-text="name"
-                                            item-value="inn"
-                                            label="Клиент"
-                                            clearable
-                                            no-data-text="Нет результатов"
-                                    >
-                                    </v-autocomplete>
-
-                                    <!-- ввод менеджера-->
-                                    <v-autocomplete
-                                            :items="managers"
-                                            v-model="editedVisit.managerID"
-                                            item-text="fullName"
-                                            item-value="ID"
-                                            label="Менеджер"
-                                            clearable
-                                            no-data-text="Нет результатов"
-                                    >
-                                    </v-autocomplete>
-
-                                    <!--                    менюшка выбора крайней даты-->
-
-                                        Дата визита:
-                                        <v-date-picker
-                                                label="Select a date"
-                                                v-model="editedVisit.date"
-                                                first-day-of-week="1"
-                                                scrollable
-                                                locale="ru-RU"
-                                        ></v-date-picker>
-                                    
-
+                                    <v-row>
+                                        <v-col lg="7">
+                                            <!-- ввод клиента-->
+                                            <v-autocomplete
+                                                :items="clients"
+                                                v-model="editedVisit.clientINN"
+                                                item-text="name"
+                                                item-value="inn"
+                                                label="Клиент"
+                                                clearable
+                                                no-data-text="Нет результатов"
+                                                @input="editedVisit.managerID=clientByINN(editedVisit.clientINN).manager"
+                                                :rules="[rules.required]"
+                                        >
+                                        </v-autocomplete>
+                                            <!-- ввод менеджера-->
+                                            <v-autocomplete
+                                                :items="managers"
+                                                v-model="editedVisit.managerID"
+                                                item-text="fullName"
+                                                item-value="ID"
+                                                label="Менеджер"
+                                                clearable
+                                                no-data-text="Нет результатов"
+                                                :rules="[rules.required]"
+                                        >
+                                        </v-autocomplete>
+                                            <!--ввод плановой оплаты-->
+                                            <v-text-field
+                                                    label="План оплаты"
+                                                    v-model.number="editedVisit.paymentPlan"
+                                                    :rules="[rules.required]"
+                                            ></v-text-field>
+                                            {{ editedVisit }}
+                                        </v-col>
+                                        <v-col lg="5" justify="center" align="center">
+                                            <!-- менюшка выбор а даты визита-->
+                                            <v-date-picker
+                                                        label="Select a date"
+                                                        v-model="editedVisit.date"
+                                                        first-day-of-week="1"
+                                                        no-title
+                                                        scrollable
+                                                        locale="ru-RU"
+                                                ></v-date-picker>
+                                        </v-col>
+                                    </v-row>
                                 </v-container>
                             </v-card-text>
 
@@ -182,6 +193,10 @@
                 search: '',
                 editedUUID: -1,
                 date: new Date().toISOString().substr(0, 10),
+                rules: {
+                    required: value => !!value || 'Обязательное поле',
+                    isPositiveInteger: value => value.isInteger() || 'Только целые положиьельные числа'
+                },
                 headers: [
                     // {text: 'UUID', value: 'UUID', align: 'start', sortable: false, filterable: false,},
                     {text: '№', value: 'id', align: 'start', sortable: true, filterable: true,},
@@ -195,13 +210,14 @@
                     {text: 'Доставка', value: 'processed', align: 'start', sortable: true, filterable: true,},
                     {text: 'Автор', value: 'author', align: 'start', sortable: true, filterable: true,},
                     {text: 'БД', value: 'dataBase', align: 'start', sortable: true, filterable: true,},
-                    {text: 'Actions', value: 'actions', sortable: false},
+                    {text: '', value: 'actions', sortable: false},
                 ],
                 defaultVisit: {
                     UUID: -1,
                     id: null,
                     orders: null,
                     payment: null,
+                    paymentPlan: 0,
                     date: null,
                     dataBase: true,
                     clientINN: "",
@@ -216,6 +232,7 @@
                     id: null,
                     orders: null,
                     payment: null,
+                    paymentPlan: 0,
                     date: null,
                     dataBase: true,
                     clientINN: "",
@@ -253,7 +270,7 @@
               return this.$store.getters[CLIENTS_GET_ALL];
             },
             managers() {
-                return this.$store.getters[MANAGERS_GET_ALL];
+                return this.$store.getters[MANAGERS_GET_ALL].filter((m) => m.role === 'MPR')
             },
         },
         methods: {
