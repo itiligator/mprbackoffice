@@ -2,7 +2,7 @@ import {
   CLIENTS_DOWNLOAD_ALL_FROM_SERVER,
   CLIENTS_WRITE_DATA_TO_VUEX,
   CLIENTS_GET_BY_INN,
-  CLIENTS_GET_ALL, CLIENTS_IS_LOADED,
+  CLIENTS_GET_ALL, CLIENTS_IS_LOADED, CLIENTS_UPLOAD_TO_SERVER,
 } from '@/store/actions/clients';
 import { HTTP } from '@/utils/http';
 
@@ -33,6 +33,17 @@ const actions = {
       .catch((error) => {
         reject(error);
       });
+  }),
+  [CLIENTS_UPLOAD_TO_SERVER]: (s, clientData) => new Promise((resolve, reject) => {
+    Object.keys(clientData).forEach((key) => (clientData[key] == null) && delete clientData[key]);
+    HTTP.put(`clients`, [clientData])
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          console.log(err);
+          reject(err);
+        });
   }),
 };
 

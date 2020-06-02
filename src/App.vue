@@ -51,8 +51,8 @@ export default {
     data: () => ({
         links: [
             {title: 'Главная', icon: 'mdi-bookmark-outline', url: '/'},
-            {title: 'Визиты', icon: 'mdi-bookmark-outline', url: '/visits'},
-            {title: 'Клиенты', icon: 'mdi-face', url: '/clients'},
+            {title: 'Визиты', icon: 'mdi-map-marker', url: '/visits'},
+            {title: 'Клиенты', icon: 'mdi-account', url: '/clients'},
             {title: 'Выйти из системы', icon: 'mdi-lock', url: '/logout'},
         ]
     }),

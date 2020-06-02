@@ -8,7 +8,7 @@
                 :single-select="true"
                 :search="search"
                 item-key="UUID"
-                no-data-text="Данные не загружены"
+                no-data-text="Визиты отсутствуют"
                 sort-by="id"
                 sort-desc
                 locale="ru-RU"
@@ -21,14 +21,13 @@
             </template>
             <template v-slot:item.actions="{ item }">
                 <v-icon
-                        small
                         class="mr-2"
                         @click="editVisit(item)"
                 >
                     mdi-pencil
                 </v-icon>
                 <v-icon
-                        small
+                        class="mr-2"
                         @click="cancelVisit(item)"
                 >
                     mdi-delete
@@ -63,7 +62,6 @@
                                                 item-text="name"
                                                 item-value="inn"
                                                 label="Клиент"
-                                                clearable
                                                 no-data-text="Нет результатов"
                                                 @input="editedVisit.managerID=clientByINN(editedVisit.clientINN).manager"
                                                 :rules="[rules.required]"
@@ -76,7 +74,6 @@
                                                 item-text="fullName"
                                                 item-value="ID"
                                                 label="Менеджер"
-                                                clearable
                                                 no-data-text="Нет результатов"
                                                 :rules="[rules.required]"
                                         >
@@ -87,7 +84,6 @@
                                                     v-model.number="editedVisit.paymentPlan"
                                                     :rules="[rules.required]"
                                             ></v-text-field>
-                                            {{ editedVisit }}
                                         </v-col>
                                         <v-col lg="5" justify="center" align="center">
                                             <!-- менюшка выбор а даты визита-->
