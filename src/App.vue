@@ -1,14 +1,11 @@
 <template>
-    <div id="app">
-        <v-app id="inspire">
-            <v-app id="inspire">
+            <v-app>
                 <v-navigation-drawer permanent app :expand-on-hover="true" v-if="isAuthenticated">
                     <v-list nav>
                             <v-list-item
                                     v-for="link of links"
                                     :key="link.title"
                                     :to="link.url"
-
                             >
                                 <v-list-item-icon>
                                     <v-icon>{{ link.icon }}</v-icon>
@@ -24,8 +21,6 @@
                     <router-view></router-view>
                 </v-content>
             </v-app>
-        </v-app>
-    </div>
 </template>
 
 <script>

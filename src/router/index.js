@@ -1,7 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import Home from '../views/Home.vue'
-// import Login from "@/views/Login";
 import Logout from "@/components/Logout";
 
 import store from '@/store';
@@ -51,7 +49,6 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   if (to.name !== 'Login' && !store.getters.isAuthenticated) next({ name: 'Login' });
   else next();
-  // store.commit(HIDE_SIDEBAR);
 });
 
 export default router

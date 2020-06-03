@@ -194,7 +194,7 @@
     import {MANAGERS_GET_ALL} from "@/store/actions/managers";
 
     export default {
-        name: "Clients",
+        name: "Goods",
         mixins: [CommonMethods],
         mounted() {
             this.downloadClients();
