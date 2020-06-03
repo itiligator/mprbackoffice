@@ -8,6 +8,7 @@ import visits from './modules/visits';
 import managers from './modules/managers';
 import user from './modules/user';
 import auth from './modules/auth';
+import goods from "@/store/modules/goods";
 
 Vue.use(Vuex);
 
@@ -18,7 +19,7 @@ export default new Vuex.Store({
     user,
     auth,
     visits,
-    // goods,
+    goods,
     clients,
     managers,
     // checklists,

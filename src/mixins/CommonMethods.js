@@ -1,5 +1,6 @@
 import {CLIENTS_GET_BY_INN} from "@/store/actions/clients";
 import {MANAGERS_GET_BY_ID} from "@/store/actions/managers";
+import {GOODS_GET_BY_ITEM} from "@/store/actions/goods";
 
 export const CommonMethods = {
     methods: {
@@ -8,6 +9,9 @@ export const CommonMethods = {
         },
         managerByID(ID) {
             return this.$store.getters[MANAGERS_GET_BY_ID](ID);
+        },
+        goodByItem(item) {
+            return this.$store.getters[GOODS_GET_BY_ITEM](item);
         },
         visitStatusFromCode(status){
             switch (status) {

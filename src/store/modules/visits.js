@@ -18,7 +18,8 @@ import {
 
 
 const state = {
-  visits: [],
+    visits: [],
+    visitStatus: ''
 };
 
 const getters = {

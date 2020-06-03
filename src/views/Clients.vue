@@ -226,7 +226,7 @@
                     {text: 'Отсрочка', value: 'delay', align: 'start', sortable: true, filterable: true,},
                     {text: 'Статус', value: 'status', align: 'start', sortable: true, filterable: true,},
                     {text: 'БД', value: 'dataBase', align: 'start', sortable: true, filterable: true,},
-                    {text: '', value: 'actions', align: 'start', sortable: true, filterable: true,},
+                    {text: '', value: 'actions', align: 'start', sortable: false, filterable: false,},
                 ],
                 defaultClient: {
                     inn: null,

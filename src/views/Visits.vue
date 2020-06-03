@@ -12,6 +12,7 @@
                 sort-by="id"
                 sort-desc
                 locale="ru-RU"
+                :loading="isTableLoading"
                 >
             <template v-slot:item.invoice="{ item }">
                 <v-icon> {{ okIcon(item.invoice) }} </v-icon>
@@ -168,7 +169,7 @@
     import {
         VISITS_DOWNLOAD_FROM_SERVER_BY_DATE,
         VISITS_GET_ALL,
-        VISITS_GET_BY_UUID,
+        VISITS_GET_BY_UUID, VISITS_IS_LOADING,
         VISITS_UPLOAD_TO_SERVER
     } from "@/store/actions/visits";
     import {CommonMethods} from "@/mixins/CommonMethods";
@@ -266,7 +267,10 @@
               return this.$store.getters[CLIENTS_GET_ALL];
             },
             managers() {
-                return this.$store.getters[MANAGERS_GET_ALL].filter((m) => m.role === 'MPR')
+                return this.$store.getters[MANAGERS_GET_ALL].filter((m) => m.role === 'MPR');
+            },
+            isTableLoading() {
+                return this.$store.getters[VISITS_IS_LOADING];
             },
         },
         methods: {
