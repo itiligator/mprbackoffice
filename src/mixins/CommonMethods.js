@@ -1,6 +1,7 @@
 import {CLIENTS_GET_BY_INN} from "@/store/actions/clients";
 import {MANAGERS_GET_BY_ID} from "@/store/actions/managers";
 import {GOODS_GET_BY_ITEM} from "@/store/actions/goods";
+import {CHECKLISTQUESTIONS_GET_BY_UUID} from "@/store/actions/checklistQuestions";
 
 export const CommonMethods = {
     methods: {
@@ -12,6 +13,9 @@ export const CommonMethods = {
         },
         goodByItem(item) {
             return this.$store.getters[GOODS_GET_BY_ITEM](item);
+        },
+        checklistQuestionByUUID(UUID) {
+            return this.$store.getters[CHECKLISTQUESTIONS_GET_BY_UUID](UUID);
         },
         visitStatusFromCode(status){
             switch (status) {

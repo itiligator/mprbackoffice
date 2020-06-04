@@ -9,6 +9,7 @@ import managers from './modules/managers';
 import user from './modules/user';
 import auth from './modules/auth';
 import goods from "@/store/modules/goods";
+import checklistQuestions from "@/store/modules/checklistQuestions";
 
 Vue.use(Vuex);
 
@@ -22,6 +23,7 @@ export default new Vuex.Store({
     goods,
     clients,
     managers,
+    checklistQuestions,
     // checklists,
     // order,
   },

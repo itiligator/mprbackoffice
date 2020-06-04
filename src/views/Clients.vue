@@ -28,13 +28,13 @@
                 >
                     mdi-pencil
                 </v-icon>
-                <v-icon
+                <v-icon v-if="item.status"
                         class="mr-2"
                         @click="deactivateClient(item)"
                 >
                     mdi-account-remove
                 </v-icon>
-                <v-icon
+                <v-icon v-else
                         class="mr-2"
                         @click="activateClient(item)"
                 >
@@ -302,7 +302,7 @@
             },
 
             save () {
-                if (this.editedClient.inn === '') {this.editedClient.inn = Math.round(1000 + Math.random() * 99000).toString()}
+                if (this.editedClient.inn === null) {this.editedClient.inn = Math.round(1000 + Math.random() * 99000).toString()}
                 this.$store.dispatch(CLIENTS_UPLOAD_TO_SERVER, this.editedClient).then(() =>  this.downloadClients());
                 this.close()
             },

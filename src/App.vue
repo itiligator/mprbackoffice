@@ -48,7 +48,8 @@ export default {
             {title: 'Главная', icon: 'mdi-bookmark-outline', url: '/'},
             {title: 'Визиты', icon: 'mdi-map-marker', url: '/visits'},
             {title: 'Клиенты', icon: 'mdi-account', url: '/clients'},
-            {title: 'Товары', icon: 'mdi-account', url: '/goods'},
+            {title: 'Товары', icon: 'mdi-cart', url: '/goods'},
+            {title: 'Вопросы чеклистов', icon: 'mdi-comment-question', url: '/checklistquestions'},
             {title: 'Выйти из системы', icon: 'mdi-lock', url: '/logout'},
         ]
     }),
