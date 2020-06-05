@@ -2,6 +2,7 @@ import {CLIENTS_GET_BY_INN} from "@/store/actions/clients";
 import {MANAGERS_GET_BY_ID} from "@/store/actions/managers";
 import {GOODS_GET_BY_ITEM} from "@/store/actions/goods";
 import {CHECKLISTQUESTIONS_GET_BY_UUID} from "@/store/actions/checklistQuestions";
+import {VISITS_GET_BY_UUID} from "@/store/actions/visits";
 
 export const CommonMethods = {
     methods: {
@@ -26,6 +27,9 @@ export const CommonMethods = {
                 case -2: return 'Отменен';
                 default: return status;
             }
+        },
+        visitByUUID(UUID) {
+            return this.$store.getters[VISITS_GET_BY_UUID](UUID);
         },
         managerRoleFromCode(role){
             switch (role) {

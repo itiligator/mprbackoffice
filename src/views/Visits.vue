@@ -13,6 +13,7 @@
                 sort-desc
                 locale="ru-RU"
                 :loading="isTableLoading"
+                show-expand
                 >
             <template v-slot:item.invoice="{ item }">
                 <v-icon> {{ okIcon(item.invoice) }} </v-icon>
@@ -27,12 +28,34 @@
                 >
                     mdi-pencil
                 </v-icon>
-                <v-icon
+                <v-icon v-if="visitByUUID(item.UUID).status>=0"
                         class="mr-2"
                         @click="cancelVisit(item)"
                 >
                     mdi-delete
                 </v-icon>
+            </template>
+            <template v-slot:expanded-item="{ headers, item }">
+                <td colspan="6">
+                        <v-data-table
+                            :headers="orderHeaders"
+                            :items="item.orders"
+                            item-key="productItem"
+                            no-data-text="Заказы отсутствуют"
+                            >
+                            <template v-slot:item.name="{ item }">
+                                {{ goodByItem(item.productItem).name }}
+                            </template>
+                            <template v-slot:item.orderToRec="{ item }">
+                                {{ item.order }} / {{ item.recommend }}
+                            </template>
+                            <template v-slot:top>
+                                <v-toolbar flat color="white">
+                                    <v-toolbar-title>Заказы</v-toolbar-title>
+                                </v-toolbar>
+                            </template>
+                        </v-data-table>
+                </td>
             </template>
             <template v-slot:top>
                 <v-toolbar flat color="white">
@@ -42,7 +65,7 @@
                             inset
                             vertical
                     ></v-divider>
-<!--                    кнопочка Новый визит-->
+<!--                    кнопочка Новый визит и окно редактирования визита-->
                     <v-dialog v-model="editDialog" max-width="840px" persistent>
                         <template v-slot:activator="{ on }">
                             <v-btn color="primary" dark v-on="on">Добавить визит</v-btn>
@@ -66,6 +89,7 @@
                                                 no-data-text="Нет результатов"
                                                 @input="editedVisit.managerID=clientByINN(editedVisit.clientINN).manager"
                                                 :rules="[rules.required]"
+                                                :disabled="editedVisit.status!==0"
                                         >
                                         </v-autocomplete>
                                             <!-- ввод менеджера-->
@@ -77,13 +101,20 @@
                                                 label="Менеджер"
                                                 no-data-text="Нет результатов"
                                                 :rules="[rules.required]"
+                                                :disabled="editedVisit.status!==0"
                                         >
                                         </v-autocomplete>
                                             <!--ввод плановой оплаты-->
                                             <v-text-field
                                                     label="План оплаты"
                                                     v-model.number="editedVisit.paymentPlan"
-                                                    :rules="[rules.required]"
+                                                    :disabled="editedVisit.status!==0"
+                                            ></v-text-field>
+                                            <!--ввод фактической оплаты-->
+                                            <v-text-field
+                                                    label="Факт. оплата"
+                                                    v-model.number="editedVisit.payment"
+                                                    :disabled="editedVisit.invoice || editedVisit.status!==2"
                                             ></v-text-field>
                                         </v-col>
                                         <v-col lg="5" justify="center" align="center">
@@ -95,6 +126,7 @@
                                                         no-title
                                                         scrollable
                                                         locale="ru-RU"
+                                                        :disabled="editedVisit.status!==0"
                                                 ></v-date-picker>
                                         </v-col>
                                     </v-row>
@@ -176,12 +208,14 @@
     import { uuid } from 'vue-uuid';
     import {CLIENTS_GET_ALL} from "@/store/actions/clients";
     import {MANAGERS_GET_ALL} from "@/store/actions/managers";
+    import {GOODS_DOWNLOAD_ALL_FROM_SERVER} from "@/store/actions/goods";
 
     export default {
         name: "Visits",
         mixins: [CommonMethods],
         mounted() {
             this.downloadVisits();
+            this.$store.dispatch(GOODS_DOWNLOAD_ALL_FROM_SERVER);
         },
         data() {
             return {
@@ -208,6 +242,18 @@
                     {text: 'Автор', value: 'author', align: 'start', sortable: true, filterable: true,},
                     {text: 'БД', value: 'dataBase', align: 'start', sortable: true, filterable: true,},
                     {text: '', value: 'actions', sortable: false},
+                ],
+                orderHeaders: [
+                    {text: 'Артикул', value: 'productItem', align: 'start', sortable: true, filterable: true,},
+                    {text: 'Наименование', value: 'name', align: 'start', sortable: true, filterable: true,},
+                    {text: 'Заказ/Реком.', value: 'orderToRec', align: 'start', sortable: true, filterable: true,},
+                    {text: 'Остаток', value: 'balance', align: 'start', sortable: true, filterable: true,},
+                    {text: 'Продажи', value: 'sales', align: 'start', sortable: true, filterable: true,},
+                ],
+                checklistHeaders: [
+                    {text: 'Вопрос', value: 'question', align: 'start', sortable: true, filterable: true,},
+                    {text: 'Ответ 1', value: 'answer1', align: 'start', sortable: true, filterable: true,},
+                    {text: 'Ответ 2', value: 'answer2', align: 'start', sortable: true, filterable: true,},
                 ],
                 defaultVisit: {
                     UUID: -1,
@@ -257,6 +303,7 @@
                         payment: visit.payment,
                         paymentPlan: visit.paymentPlan,
                         dataBase: visit.dataBase ? 'ПБК' : 'ТЕСТ',
+                        orders: visit.orders
                     }
                 });
             },
@@ -285,8 +332,9 @@
             },
 
             cancelVisit (visit) {
-                const cvisit = this.$store.getters[VISITS_GET_BY_UUID](visit.UUID);
+                const cvisit = this.visitByUUID(visit.UUID);
                 let nstatus = -1;
+                let actionString = (cvisit.status === 0)? 'Отменить' : 'Аннулировать';
                 switch (cvisit.status) {
                     case 0:
                         nstatus = -2;
@@ -296,7 +344,7 @@
                         break;
                     default: return;
                 }
-                confirm('Отменить визит?') && this.$store.dispatch(VISITS_UPLOAD_TO_SERVER, {UUID: visit.UUID, status: nstatus}).then(() =>  this.downloadVisits());
+                confirm(actionString + ' визит?') && this.$store.dispatch(VISITS_UPLOAD_TO_SERVER, {UUID: visit.UUID, status: nstatus}).then(() =>  this.downloadVisits());
             },
 
             close () {
