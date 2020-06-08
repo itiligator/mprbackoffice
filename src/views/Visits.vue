@@ -14,6 +14,7 @@
                 locale="ru-RU"
                 :loading="isTableLoading"
                 show-expand
+                @item-expanded="downloadAnswers"
                 >
             <template v-slot:item.invoice="{ item }">
                 <v-icon> {{ okIcon(item.invoice) }} </v-icon>
@@ -55,6 +56,24 @@
                                 </v-toolbar>
                             </template>
                         </v-data-table>
+                </td>
+                <td colspan="6">
+                    <v-data-table
+                        :headers="checklistHeaders"
+                        :items="answersByVisitUUID(item.UUID)"
+                        item-key="UUID"
+                        no-data-text="Ответы на вопросы отсутствуют"
+                        :loading="isAnswersLoading"
+                        >
+                        <template v-slot:item.question="{ item }">
+                            {{ checklistQuestionByUUID(item.questionUUID).text }}
+                        </template>
+                        <template v-slot:top>
+                            <v-toolbar flat color="white">
+                                <v-toolbar-title>Ответы на вопросы чеклиста</v-toolbar-title>
+                            </v-toolbar>
+                        </template>
+                    </v-data-table>
                 </td>
             </template>
             <template v-slot:top>
@@ -209,6 +228,8 @@
     import {CLIENTS_GET_ALL} from "@/store/actions/clients";
     import {MANAGERS_GET_ALL} from "@/store/actions/managers";
     import {GOODS_DOWNLOAD_ALL_FROM_SERVER} from "@/store/actions/goods";
+    import {CHECKLISTANSWERS_DOWNLOAD_BY_VISIT_UUID_FROM_SERVER, CHECKLISTANSWERS_IS_LOADING} from '@/store/actions/checklistAnswers';
+    import {CHECKLISTQUESTIONS_DOWNLOAD_ALL_FROM_SERVER} from '@/store/actions/checklistQuestions';
 
     export default {
         name: "Visits",
@@ -216,6 +237,7 @@
         mounted() {
             this.downloadVisits();
             this.$store.dispatch(GOODS_DOWNLOAD_ALL_FROM_SERVER);
+            this.$store.dispatch(CHECKLISTQUESTIONS_DOWNLOAD_ALL_FROM_SERVER);
         },
         data() {
             return {
@@ -319,6 +341,9 @@
             isTableLoading() {
                 return this.$store.getters[VISITS_IS_LOADING];
             },
+            isAnswersLoading() {
+                return this.$store.getters[CHECKLISTANSWERS_IS_LOADING];
+            },
         },
         methods: {
             downloadVisits() {
@@ -359,6 +384,10 @@
                 if (this.editedVisit.UUID === -1) {this.editedVisit.UUID = uuid.v4()}
                 this.$store.dispatch(VISITS_UPLOAD_TO_SERVER, this.editedVisit).then(() =>  this.downloadVisits());
                 this.close()
+            },
+
+            downloadAnswers({ item }) {
+                this.$store.dispatch(CHECKLISTANSWERS_DOWNLOAD_BY_VISIT_UUID_FROM_SERVER, item.UUID);
             },
         },
         watch: {

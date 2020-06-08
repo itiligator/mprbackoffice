@@ -3,6 +3,7 @@ import {MANAGERS_GET_BY_ID} from "@/store/actions/managers";
 import {GOODS_GET_BY_ITEM} from "@/store/actions/goods";
 import {CHECKLISTQUESTIONS_GET_BY_UUID} from "@/store/actions/checklistQuestions";
 import {VISITS_GET_BY_UUID} from "@/store/actions/visits";
+import {CHECKLISTANSWERS_GET_BY_VISIT_UUID} from '@/store/actions/checklistAnswers';
 
 export const CommonMethods = {
     methods: {
@@ -44,6 +45,9 @@ export const CommonMethods = {
         },
         delay(ms) {
             return  new Promise(res => setTimeout(res, ms));
+        },
+        answersByVisitUUID(UUID) {
+            return this.$store.getters[CHECKLISTANSWERS_GET_BY_VISIT_UUID](UUID);
         },
     },
 }

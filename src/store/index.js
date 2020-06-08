@@ -10,6 +10,7 @@ import user from './modules/user';
 import auth from './modules/auth';
 import goods from "@/store/modules/goods";
 import checklistQuestions from "@/store/modules/checklistQuestions";
+import checklistAnswers from "@/store/modules/checklistAnswers";
 
 Vue.use(Vuex);
 
@@ -24,6 +25,7 @@ export default new Vuex.Store({
     clients,
     managers,
     checklistQuestions,
+    checklistAnswers,
     // checklists,
     // order,
   },
