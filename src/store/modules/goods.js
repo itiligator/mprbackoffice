@@ -32,7 +32,7 @@ const actions = {
       });
   }),
   [GOODS_UPLOAD_ALL_TO_SERVER]: (s) => new Promise((resolve, reject) => {
-    HTTP.post(`products`, s.getters[GOODS_GET_ALL])
+    HTTP.put(`products`, s.getters[GOODS_GET_ALL])
         .then((response) => {
           resolve(response);
         })
