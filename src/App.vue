@@ -17,9 +17,9 @@
                         </v-list>
                 </v-navigation-drawer>
 
-                <v-content>
+                <v-main>
                     <router-view></router-view>
-                </v-content>
+                </v-main>
             </v-app>
 </template>
 

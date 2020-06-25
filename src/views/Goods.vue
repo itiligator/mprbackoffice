@@ -32,20 +32,13 @@
                     <v-dialog v-model="editDialog" max-width="600px" persistent>
                         <v-card>
                             <v-card-title>
-                                <span class="headline">Редактировать товар</span>
+                                <span class="headline"> {{ editedGood.name }}</span>
                             </v-card-title>
 
                             <v-card-text>
                                 <v-container>
-                                            <!-- ввод наименования-->
-                                            <v-text-field
-                                                    label="Наименование"
-                                                    :rules="[rules.required]"
-                                                    v-model="editedGood.name"
-                                            ></v-text-field>
                                     <!-- ввод описания-->
                                     <v-textarea
-                                            solo
                                             label="Описание товара"
                                             v-model="editedGood.description"
                                     ></v-textarea>
