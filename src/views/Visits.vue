@@ -16,12 +16,6 @@
                 show-expand
                 @item-expanded="downloadAnswers"
                 >
-            <template v-slot:item.invoice="{ item }">
-                <v-icon> {{ okIcon(item.invoice) }} </v-icon>
-            </template>
-            <template v-slot:item.processed="{ item }">
-                <v-icon> {{ okIcon(item.processed) }} </v-icon>
-            </template>
             <template v-slot:item.actions="{ item }">
                 <v-icon
                         class="mr-2"
@@ -85,7 +79,7 @@
                             vertical
                     ></v-divider>
 <!--                    кнопочка Новый визит и окно редактирования визита-->
-                    <v-dialog v-model="editDialog" max-width="840px" persistent>
+                    <v-dialog v-model="editDialog" max-width="1140px" persistent>
                         <template v-slot:activator="{ on }">
                             <v-btn color="primary" dark v-on="on">Добавить визит</v-btn>
                         </template>
@@ -97,7 +91,7 @@
                             <v-card-text>
                                 <v-container>
                                     <v-row>
-                                        <v-col lg="7">
+                                        <v-col lg="5">
                                             <!-- ввод клиента-->
                                             <v-autocomplete
                                                 :items="clients"
@@ -129,18 +123,30 @@
                                                     v-model.number="editedVisit.paymentPlan"
                                                     :disabled="editedVisit.status!==0"
                                             ></v-text-field>
-                                            <!--ввод фактической оплаты-->
+                                            <!--ввод фактической оплаты. Неактивно если состояние визита отличается от "Завершен" или если есть ПКО-->
                                             <v-text-field
                                                     label="Факт. оплата"
                                                     v-model.number="editedVisit.payment"
-                                                    :disabled="editedVisit.invoice || editedVisit.status!==2"
+                                                    :disabled="editedVisit.invoice!=='' || editedVisit.status!==2"
                                             ></v-text-field>
                                         </v-col>
-                                        <v-col lg="5" justify="center" align="center">
+                                        <v-col justify="center" align="center">
                                             <!-- менюшка выбор а даты визита-->
+                                            <h3>Дата визита</h3>
                                             <v-date-picker
-                                                        label="Select a date"
                                                         v-model="editedVisit.date"
+                                                        first-day-of-week="1"
+                                                        no-title
+                                                        scrollable
+                                                        locale="ru-RU"
+                                                        :disabled="editedVisit.status!==0"
+                                                ></v-date-picker>
+                                        </v-col>
+                                        <v-col justify="center" align="center">
+                                            <!-- менюшка выбор а даты доставки-->
+                                            <h3>Дата доствки</h3>
+                                            <v-date-picker
+                                                        v-model="editedVisit.deliveryDate"
                                                         first-day-of-week="1"
                                                         no-title
                                                         scrollable
@@ -260,7 +266,7 @@
                     {text: 'Оплата', value: 'payment', align: 'start', sortable: true, filterable: true,},
                     {text: 'Оплата план.', value: 'paymentPlan', align: 'start', sortable: true, filterable: true,},
                     {text: 'ПКО', value: 'invoice', align: 'start', sortable: true, filterable: true,},
-                    {text: 'Доставка', value: 'processed', align: 'start', sortable: true, filterable: true,},
+                    {text: 'Накладная', value: 'processed', align: 'start', sortable: true, filterable: true,},
                     {text: 'Дата доставки', value: 'deliveryDate', align: 'start', sortable: true, filterable: true,},
                     {text: 'Автор', value: 'author', align: 'start', sortable: true, filterable: true,},
                     {text: 'БД', value: 'dataBase', align: 'start', sortable: true, filterable: true,},
@@ -287,8 +293,8 @@
                     date: null,
                     dataBase: true,
                     clientINN: "",
-                    processed: false,
-                    invoice: false,
+                    processed: "",
+                    invoice: "",
                     status: 0,
                     managerID: '',
                     author: null,
@@ -303,8 +309,8 @@
                     date: null,
                     dataBase: true,
                     clientINN: "",
-                    processed: false,
-                    invoice: false,
+                    processed: "",
+                    invoice: "",
                     status: 0,
                     managerID: '',
                     author: null,
