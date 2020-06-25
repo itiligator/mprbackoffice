@@ -248,7 +248,7 @@
                 date: new Date().toISOString().substr(0, 10),
                 rules: {
                     required: value => !!value || 'Обязательное поле',
-                    isPositiveInteger: value => value.isInteger() || 'Только целые положиьельные числа'
+                    isPositiveInteger: value => value.isInteger() || 'Только целые положительные числа'
                 },
                 headers: [
                     // {text: 'UUID', value: 'UUID', align: 'start', sortable: false, filterable: false,},
@@ -261,6 +261,7 @@
                     {text: 'Оплата план.', value: 'paymentPlan', align: 'start', sortable: true, filterable: true,},
                     {text: 'ПКО', value: 'invoice', align: 'start', sortable: true, filterable: true,},
                     {text: 'Доставка', value: 'processed', align: 'start', sortable: true, filterable: true,},
+                    {text: 'Дата доставки', value: 'deliveryDate', align: 'start', sortable: true, filterable: true,},
                     {text: 'Автор', value: 'author', align: 'start', sortable: true, filterable: true,},
                     {text: 'БД', value: 'dataBase', align: 'start', sortable: true, filterable: true,},
                     {text: '', value: 'actions', sortable: false},
@@ -291,6 +292,7 @@
                     status: 0,
                     managerID: '',
                     author: null,
+                    deliveryDate: null,
                 },
                 editedVisit: {
                     UUID: -1,
@@ -306,6 +308,7 @@
                     status: 0,
                     managerID: '',
                     author: null,
+                    deliveryDate: null,
                 },
             };
         },
