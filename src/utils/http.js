@@ -22,10 +22,8 @@ const successHandler = (response) => {
 
 
 export const HTTP = axios.create({
-  // baseURL: 'http://46.174.253.173:8000/api/',
-  // baseURL: 'http://192.168.42.47:8000/api',
-  baseURL: 'http://127.0.0.1:8000/api/',
-  timeout: 10000,
+  baseURL: 'https://rhzc.ru/api/',
+  timeout: 5000,
   headers: (token === null) ? {} : { Authorization: `Token ${token}` },
 });
 
