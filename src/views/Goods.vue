@@ -20,6 +20,9 @@
                     mdi-pencil
                 </v-icon>
             </template>
+            <template v-slot:item.active="{ item }">
+                <v-icon> {{ okIcon(item.active) }} </v-icon>
+            </template>
             <template v-slot:top>
                 <v-toolbar flat color="white">
                     <v-toolbar-title>Товары</v-toolbar-title>
@@ -42,6 +45,10 @@
                                             label="Описание товара"
                                             v-model="editedGood.description"
                                     ></v-textarea>
+                                    <v-checkbox
+                                    v-model='editedGood.active'
+                                    label='Активен'
+                                    ></v-checkbox>
                                 </v-container>
                             </v-card-text>
 
@@ -100,12 +107,14 @@
                     {text: 'Артикул', value: 'item', align: 'start', sortable: true, filterable: true,},
                     {text: 'Наименование', value: 'name', align: 'start', sortable: true, filterable: true,},
                     {text: 'Описание', value: 'description', align: 'start', sortable: true, filterable: true,},
+                    {text: 'Активность', value: 'active', align: 'start', sortable: true, filterable: true,},
                     {text: '', value: 'actions', align: 'start', sortable: false, filterable: false,},
                 ],
                 editedGood: {
                     item: null,
                     name: '',
-                    description: ''
+                    description: '',
+                    active: null,
                 },
             };
         },
