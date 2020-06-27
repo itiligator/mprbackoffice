@@ -105,12 +105,12 @@
                                                 </v-col>
                                                 <v-col>
                                             <!--ввод типа цены-->
-                                            <v-combobox
+<!--                                             <v-combobox
                                                     :items="priceTypes"
                                                     v-model="editedClient.priceType"
                                                     label="Тип цены"
                                             >
-                                            </v-combobox>
+                                            </v-combobox> -->
                                                 </v-col>
                                             </v-row>
                                             <v-row>
