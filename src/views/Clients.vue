@@ -130,6 +130,15 @@
                                             ></v-text-field>
                                             </v-col>
                                             </v-row>
+                                            <row>
+                                            <v-col>
+                                            <!--                                            ввод адреса-->
+                                            <v-text-field
+                                                    label="Адрес"
+                                                    v-model="editedClient.address"
+                                            ></v-text-field>
+                                            </v-col>
+                                            </v-row>
                                             <v-row>
                                                 <v-col>
                                                     <!--ввод лимита-->
@@ -217,6 +226,7 @@
                 headers: [
                     {text: 'ИНН/Код', value: 'inn', align: 'start', sortable: true, filterable: true,},
                     {text: 'Наименование', value: 'name', align: 'start', sortable: true, filterable: true,},
+                    {text: 'Адрес', value: 'address', align: 'start', sortable: true, filterable: true,},
                     {text: 'Тип клиента', value: 'clientType', align: 'start', sortable: true, filterable: true,},
                     {text: 'Тип цены', value: 'priceType', align: 'start', sortable: true, filterable: true,},
                     {text: 'Менеджер', value: 'manager', align: 'start', sortable: true, filterable: true,},
@@ -235,6 +245,7 @@
                     priceType: '',
                     manager: null,
                     phone: '',
+                    address: '',
                     email: '',
                     limit: 0,
                     delay: 0,
@@ -249,6 +260,7 @@
                     priceType: '',
                     manager: null,
                     phone: '',
+                    address: '',
                     email: '',
                     limit: 0,
                     delay: 0,
