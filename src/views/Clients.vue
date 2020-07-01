@@ -130,7 +130,7 @@
                                             ></v-text-field>
                                             </v-col>
                                             </v-row>
-                                            <row>
+                                            <v-row>
                                             <v-col>
                                             <!--                                            ввод адреса-->
                                             <v-text-field
