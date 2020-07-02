@@ -11,6 +11,7 @@ import auth from './modules/auth';
 import goods from "@/store/modules/goods";
 import checklistQuestions from "@/store/modules/checklistQuestions";
 import checklistAnswers from "@/store/modules/checklistAnswers";
+import prices from './modules/prices';
 
 Vue.use(Vuex);
 
@@ -26,6 +27,7 @@ export default new Vuex.Store({
     managers,
     checklistQuestions,
     checklistAnswers,
+    prices,
     // checklists,
     // order,
   },

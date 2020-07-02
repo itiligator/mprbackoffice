@@ -23,6 +23,13 @@
             <template v-slot:item.active="{ item }">
                 <v-icon> {{ okIcon(item.active) }} </v-icon>
             </template>
+            <template v-slot:item.prices="{ item }">
+                <ul>
+                    <li v-for="price in prices[item.item]" v-bind:key="price.id">
+                        {{ price.priceType }}: {{ price.amount }}
+                    </li>
+                </ul> 
+            </template>
             <template v-slot:top>
                 <v-toolbar flat color="white">
                     <v-toolbar-title>Товары</v-toolbar-title>
@@ -88,12 +95,16 @@
         GOODS_UPLOAD_ALL_TO_SERVER,
         GOODS_WRITE_ALL_TO_VUEX
     } from "@/store/actions/goods";
+    import { PRICES_GET_ALL,
+    PRICES_DOWNLOAD_ALL_FROM_SERVER
+    } from '@/store/actions/prices'
 
     export default {
         name: "Goods",
         mixins: [CommonMethods],
         mounted() {
             this.downloadGoods();
+            this.downloadPrices();
         },
         data() {
             return {
@@ -106,6 +117,7 @@
                 headers: [
                     {text: 'Артикул', value: 'item', align: 'start', sortable: true, filterable: true,},
                     {text: 'Наименование', value: 'name', align: 'start', sortable: true, filterable: true,},
+                    {text: 'Цены', value: 'prices', align: 'start', sortable: false, filterable: false,},
                     {text: 'Описание', value: 'description', align: 'start', sortable: true, filterable: true,},
                     {text: 'Активность', value: 'active', align: 'start', sortable: true, filterable: true,},
                     {text: '', value: 'actions', align: 'start', sortable: false, filterable: false,},
@@ -122,10 +134,16 @@
             goods() {
                 return JSON.parse(JSON.stringify(this.$store.getters[GOODS_GET_ALL]));
             },
+            prices() {
+                return this.$store.getters[PRICES_GET_ALL];
+            },
         },
         methods: {
             downloadGoods() {
                 this.$store.dispatch(GOODS_DOWNLOAD_ALL_FROM_SERVER);
+            },
+            downloadPrices() {
+                this.$store.dispatch(PRICES_DOWNLOAD_ALL_FROM_SERVER);
             },
             editGood (index) {
                 this.editedGoodIndex = index;

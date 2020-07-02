@@ -217,7 +217,7 @@
                 date: new Date().toISOString().substr(0, 10),
                 rules: {
                     required: value => !!value || 'Обязательное поле',
-                    isPositiveInteger: value => value.isInteger() || 'Только целые положиьельные числа',
+                    isPositiveInteger: value => value.isInteger() || 'Только целые положительные числа',
                     email: value => {
                         const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
                         return pattern.test(value) || 'Некорректный e-mail'
