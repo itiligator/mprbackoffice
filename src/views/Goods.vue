@@ -23,6 +23,13 @@
             <template v-slot:item.active="{ item }">
                 <v-icon> {{ okIcon(item.active) }} </v-icon>
             </template>
+            <template v-slot:item.prices="{ item }">
+                <ul>
+                    <li v-for="price in prices[item.item]" v-bind:key="price.id">
+                        {{ price.priceType }}: {{ price.amount }}
+                    </li>
+                </ul> 
+            </template>
             <template v-slot:top>
                 <v-toolbar flat color="white">
                     <v-toolbar-title>Товары</v-toolbar-title>
@@ -77,7 +84,6 @@
                 </v-toolbar>
             </template>
         </v-data-table>
-        {{ prices }}
     </div>
 </template>
 
@@ -111,6 +117,7 @@
                 headers: [
                     {text: 'Артикул', value: 'item', align: 'start', sortable: true, filterable: true,},
                     {text: 'Наименование', value: 'name', align: 'start', sortable: true, filterable: true,},
+                    {text: 'Цены', value: 'prices', align: 'start', sortable: false, filterable: false,},
                     {text: 'Описание', value: 'description', align: 'start', sortable: true, filterable: true,},
                     {text: 'Активность', value: 'active', align: 'start', sortable: true, filterable: true,},
                     {text: '', value: 'actions', align: 'start', sortable: false, filterable: false,},
