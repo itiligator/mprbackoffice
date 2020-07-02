@@ -77,6 +77,7 @@
                 </v-toolbar>
             </template>
         </v-data-table>
+        {{ prices }}
     </div>
 </template>
 
@@ -88,12 +89,16 @@
         GOODS_UPLOAD_ALL_TO_SERVER,
         GOODS_WRITE_ALL_TO_VUEX
     } from "@/store/actions/goods";
+    import { PRICES_GET_ALL,
+    PRICES_DOWNLOAD_ALL_FROM_SERVER
+    } from '@/store/actions/prices'
 
     export default {
         name: "Goods",
         mixins: [CommonMethods],
         mounted() {
             this.downloadGoods();
+            this.downloadPrices();
         },
         data() {
             return {
@@ -122,10 +127,16 @@
             goods() {
                 return JSON.parse(JSON.stringify(this.$store.getters[GOODS_GET_ALL]));
             },
+            prices() {
+                return this.$store.getters[PRICES_GET_ALL];
+            },
         },
         methods: {
             downloadGoods() {
                 this.$store.dispatch(GOODS_DOWNLOAD_ALL_FROM_SERVER);
+            },
+            downloadPrices() {
+                this.$store.dispatch(PRICES_DOWNLOAD_ALL_FROM_SERVER);
             },
             editGood (index) {
                 this.editedGoodIndex = index;
