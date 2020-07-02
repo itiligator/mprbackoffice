@@ -51,9 +51,9 @@
                     ></v-divider>
 <!--                    кнопочка Новый визит-->
                     <v-dialog v-model="editDialog" max-width="600px" persistent>
-<!--                         <template v-slot:activator="{ on }">
-                            <v-btn color="primary" dark v-on="on">Добавить клиента</v-btn>
-                        </template> -->
+                        <template v-slot:activator="{ on }">
+                            <v-btn color="primary" dark v-on="on">Добавить магазин</v-btn>
+                        </template>
                         <v-card>
                             <v-card-title>
                                 <span class="headline">{{ editFormTitle }}</span>
@@ -67,23 +67,6 @@
                                                     :rules="[rules.required]"
                                                     v-model="editedClient.name"
                                             ></v-text-field>
-                                    <v-row>
-                                        <v-col lg="9">
-<!--                                            ввод инн/кода-->
-                                            <v-text-field
-                                                    label="ИНН/Код"
-                                                    :rules="[rules.required]"
-                                                    v-model="editedClient.inn"
-                                                    disabled
-                                            ></v-text-field>
-                                        </v-col>
-                                        <v-col>
-                                            <v-switch
-                                                    :label="editedClient.dataBase ? 'БД: ПБК' : 'БД: Тест'"
-                                                    v-model="editedClient.dataBase"
-                                            ></v-switch>
-                                        </v-col>
-                                    </v-row>
                                             <v-autocomplete
                                                     :items="managers"
                                                     v-model="editedClient.manager"
@@ -93,68 +76,33 @@
                                                     no-data-text="Нет результатов"
                                             >
                                             </v-autocomplete>
-                                            <v-row>
-                                                <v-col>
-<!--                                            ввод типа клиента-->
-                                            <v-combobox
-                                                    :items="clientTypes"
-                                                    v-model="editedClient.clientType"
-                                                    label="Тип клиента"
-                                            >
-                                            </v-combobox>
-                                                </v-col>
-                                                <v-col>
-                                            <!--ввод типа цены-->
-<!--                                             <v-combobox
-                                                    :items="priceTypes"
-                                                    v-model="editedClient.priceType"
-                                                    label="Тип цены"
-                                            >
-                                            </v-combobox> -->
-                                                </v-col>
-                                            </v-row>
-                                            <v-row>
-                                            <v-col>
 <!--                                            ввод телефона-->
                                             <v-text-field
                                                     label="Телефон"
                                                     v-model="editedClient.phone"
                                             ></v-text-field>
-                                            </v-col>
-                                            <v-col>
-                                            <!--                                            ввод e-mail-->
-                                            <v-text-field
-                                                    label="E-mail"
-                                                    v-model="editedClient.email"
-                                                    :rules="[rules.email]"
-                                            ></v-text-field>
-                                            </v-col>
-                                            </v-row>
-                                            <v-row>
-                                            <v-col>
+
+
                                             <!--                                            ввод адреса-->
                                             <v-text-field
                                                     label="Адрес"
                                                     v-model="editedClient.address"
                                             ></v-text-field>
-                                            </v-col>
-                                            </v-row>
                                             <v-row>
                                                 <v-col>
-                                                    <!--ввод лимита-->
                                                     <v-text-field
-                                                            label="Лимит"
-                                                            v-model.number="editedClient.limit"
+                                                        label="Долгота"
+                                                        v-model="editedClient.longitude"
                                                     ></v-text-field>
                                                 </v-col>
                                                 <v-col>
-                                                    <!--ввод отсрочки-->
                                                     <v-text-field
-                                                            label="Отсрочка"
-                                                            v-model.number="editedClient.delay"
+                                                        label="Широта"
+                                                        v-model="editedClient.latitude"
                                                     ></v-text-field>
                                                 </v-col>
                                             </v-row>
+
 <!--                                    панелька допуска менеджеров-->
                                     <v-expansion-panels>
                                         <v-expansion-panel>
@@ -213,36 +161,24 @@
                 dateMenu: false,
                 editDialog: false,
                 search: '',
-                /*isNewClient: true,*/
+                isNewClient: true,
                 date: new Date().toISOString().substr(0, 10),
                 rules: {
                     required: value => !!value || 'Обязательное поле',
-                    isPositiveInteger: value => value.isInteger() || 'Только целые положительные числа',
-                    email: value => {
-                        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-                        return pattern.test(value) || 'Некорректный e-mail'
-                    },
                 },
                 headers: [
-                    {text: 'ИНН/Код', value: 'inn', align: 'start', sortable: true, filterable: true,},
                     {text: 'Наименование', value: 'name', align: 'start', sortable: true, filterable: true,},
                     {text: 'Адрес', value: 'address', align: 'start', sortable: true, filterable: true,},
-                    {text: 'Тип клиента', value: 'clientType', align: 'start', sortable: true, filterable: true,},
-                    {text: 'Тип цены', value: 'priceType', align: 'start', sortable: true, filterable: true,},
                     {text: 'Менеджер', value: 'manager', align: 'start', sortable: true, filterable: true,},
                     {text: 'Телефон', value: 'phone', align: 'start', sortable: true, filterable: true,},
-                    {text: 'E-mail', value: 'email', align: 'start', sortable: true, filterable: true,},
-                    {text: 'Лимит', value: 'limit', align: 'start', sortable: true, filterable: true,},
-                    {text: 'Отсрочка', value: 'delay', align: 'start', sortable: true, filterable: true,},
                     {text: 'Статус', value: 'status', align: 'start', sortable: true, filterable: true,},
-                    {text: 'БД', value: 'dataBase', align: 'start', sortable: true, filterable: true,},
                     {text: '', value: 'actions', align: 'start', sortable: false, filterable: false,},
                 ],
                 defaultClient: {
                     inn: null,
                     name: null,
-                    clientType: '',
-                    priceType: '',
+                    clientType: 'Магазин',
+                    priceType: 'Магазин',
                     manager: null,
                     phone: '',
                     address: '',
@@ -251,13 +187,15 @@
                     delay: 0,
                     status: true,
                     dataBase: true,
-                    authorizedManagersID: []
+                    authorizedManagersID: [],
+                    longitude: '',
+                    latitude: ''
                 },
                 editedClient: {
                     inn: null,
                     name: null,
-                    clientType: '',
-                    priceType: '',
+                    clientType: 'Магазин',
+                    priceType: 'Магазин',
                     manager: null,
                     phone: '',
                     address: '',
@@ -266,28 +204,21 @@
                     delay: 0,
                     status: true,
                     dataBase: true,
-                    authorizedManagersID: []
+                    authorizedManagersID: [],
+                    longitude: '',
+                    latitude: ''
                 },
             };
         },
         computed: {
             editFormTitle () {
-                // return this.isNewClient ? 'Новый клиент' : 'Редактировать клиента'
-                return 'Редактировать клиента'
+                return this.isNewClient ? 'Новый магазин' : 'Редактировать данные магазина'
             },
             clients() {
-              return this.$store.getters[CLIENTS_GET_ALL].filter((c) => c.clientType !== 'Магазин');
+              return this.$store.getters[CLIENTS_GET_ALL].filter((c) => c.clientType === 'Магазин');
             },
             managers() {
                 return this.$store.getters[MANAGERS_GET_ALL].filter((m) => m.role === 'MPR')
-            },
-
-            clientTypes () {
-                return [... new Set(this.clients.map( (c) => c.clientType))]
-            },
-
-            priceTypes () {
-                return [... new Set(this.clients.map( (c) => c.priceType))]
             },
         },
         methods: {
@@ -295,27 +226,27 @@
                 this.$store.dispatch(CLIENTS_DOWNLOAD_ALL_FROM_SERVER);
             },
             editClient (client) {
-                /*this.isNewClient = false;*/
+                this.isNewClient = false;
                 this.editedClient = Object.assign({}, this.clientByINN(client.inn));
                 this.editDialog = true;
             },
             deactivateClient (client) {
-                confirm('Сделать клиента неактивным?') && this.$store.dispatch(CLIENTS_UPLOAD_TO_SERVER, {inn: client.inn, status: false}).then(() =>  this.downloadClients());
+                confirm('Сделать магазин неактивным?') && this.$store.dispatch(CLIENTS_UPLOAD_TO_SERVER, {inn: client.inn, status: false}).then(() =>  this.downloadClients());
             },
             activateClient (client) {
-                confirm('Сделать клиента активным?') && this.$store.dispatch(CLIENTS_UPLOAD_TO_SERVER, {inn: client.inn, status: true}).then(() =>  this.downloadClients());
+                confirm('Сделать магазин активным?') && this.$store.dispatch(CLIENTS_UPLOAD_TO_SERVER, {inn: client.inn, status: true}).then(() =>  this.downloadClients());
             },
 
             close () {
                 this.editDialog = false;
                 this.$nextTick(() => {
                     this.editedClient = Object.assign({}, this.defaultClient);
-                    /*this.isNewClient = true;*/
+                    this.isNewClient = true;
                 })
             },
 
             save () {
-                // if (this.editedClient.inn === null) {this.editedClient.inn = Math.round(1000 + Math.random() * 99000).toString()}
+                if (this.editedClient.inn === null) {this.editedClient.inn = Math.round(1000 + Math.random() * 999000).toString()}
                 this.$store.dispatch(CLIENTS_UPLOAD_TO_SERVER, this.editedClient).then(() =>  this.downloadClients());
                 this.close()
             },
