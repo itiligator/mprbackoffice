@@ -8,7 +8,7 @@
                 :single-select="true"
                 :search="search"
                 item-key="inn"
-                no-data-text="Данные клиентов не загружены"
+                no-data-text="Данные магазинов не загружены"
                 sort-by="name"
                 locale="ru-RU"
                 >
@@ -43,7 +43,7 @@
             </template>
             <template v-slot:top>
                 <v-toolbar flat color="white">
-                    <v-toolbar-title>Клиенты</v-toolbar-title>
+                    <v-toolbar-title>Магазины</v-toolbar-title>
                     <v-divider
                             class="mx-4"
                             inset
@@ -151,7 +151,7 @@
     import {MANAGERS_GET_ALL} from "@/store/actions/managers";
 
     export default {
-        name: "Clients",
+        name: "Shops",
         mixins: [CommonMethods],
         mounted() {
             this.downloadClients();

@@ -141,6 +141,20 @@
                                             </v-row>
                                             <v-row>
                                                 <v-col>
+                                                    <v-text-field
+                                                        label="Долгота"
+                                                        v-model="editedClient.longitude"
+                                                    ></v-text-field>
+                                                </v-col>
+                                                <v-col>
+                                                    <v-text-field
+                                                        label="Широта"
+                                                        v-model="editedClient.latitude"
+                                                    ></v-text-field>
+                                                </v-col>
+                                            </v-row>
+                                            <v-row>
+                                                <v-col>
                                                     <!--ввод лимита-->
                                                     <v-text-field
                                                             label="Лимит"
@@ -251,7 +265,9 @@
                     delay: 0,
                     status: true,
                     dataBase: true,
-                    authorizedManagersID: []
+                    authorizedManagersID: [],
+                    longitude: '',
+                    latitude: ''
                 },
                 editedClient: {
                     inn: null,
@@ -266,7 +282,9 @@
                     delay: 0,
                     status: true,
                     dataBase: true,
-                    authorizedManagersID: []
+                    authorizedManagersID: [],
+                    longitude: '',
+                    latitude: ''
                 },
             };
         },
