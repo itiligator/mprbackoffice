@@ -62,22 +62,25 @@
                                                     :rules="[rules.required]"
                                                     v-model="editedChecklistQuestion.text"
                                             ></v-textarea>
-                                    <v-autocomplete
-                                            :items="clientTypes"
-                                            v-model="editedChecklistQuestion.clientType"
-                                            label="Тип клиента"
-                                            :rules="[rules.required]"
-                                            no-data-text="Нет результатов"
-                                    > </v-autocomplete>
-                                        <!--                                            ввод типа клиента-->
-                                        <v-combobox
-                                                :items="sections"
-                                                :rules="[rules.required]"
-                                                v-model="editedChecklistQuestion.section"
-                                                label="Секция вопросов"
+                                        <v-row>
+                                            <v-col>
+                                        <v-radio-group
+                                          :disabled="editedChecklistQuestion.clientType === 'Магазин'"
+                                          v-model="editedChecklistQuestion.section"
+                                          label="Секция чеклиста"
                                         >
-                                        </v-combobox>
-
+                                          <v-radio label="Кеги" value="Кеги"></v-radio>
+                                          <v-radio label="Цены" value="Цены"></v-radio>
+                                        </v-radio-group>
+                                        </v-col>
+                                        <v-col>
+                                        <v-switch
+                                        v-model="editedChecklistQuestion.clientType"
+                                        false-value="Не магазин"
+                                        true-value="Магазин"
+                                        label='Вопрос для магазина'></v-switch>
+                                        </v-col>
+                                        </v-row>
                                 </v-container>
                             </v-card-text>
 
@@ -141,15 +144,15 @@
                 defaultChecklistQuestion: {
                     UUID: null,
                     text: '',
-                    section: '',
-                    clientType: '',
+                    section: 'Кеги',
+                    clientType: 'Не магазин',
                     active: true
                 },
                 editedChecklistQuestion: {
                     UUID: null,
                     text: '',
-                    section: '',
-                    clientType: '',
+                    section: 'Кеги',
+                    clientType: 'Не магазин',
                     active: true
                 },
             };
@@ -200,6 +203,9 @@
             },
 
             save () {
+                if (this.editedChecklistQuestion.clientType === 'Магазин') {
+                    this.editedChecklistQuestion.section = 'Общий'
+                }
                 this.$store.dispatch(CHECKLISTQUESTIONS_UPLOAD_TO_SERVER, this.editedChecklistQuestion).then(() =>  this.downloadChecklistQuestion());
                 this.close()
             },
@@ -213,6 +219,6 @@
     }
 </script>
 
-<style scoped>
+<style>
 
 </style>
