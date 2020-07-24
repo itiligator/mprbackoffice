@@ -71,7 +71,7 @@
                                         <v-col lg="9">
 <!--                                            ввод инн/кода-->
                                             <v-text-field
-                                                    label="ИНН/Код"
+                                                    label="ИНН"
                                                     :rules="[rules.required]"
                                                     v-model="editedClient.inn"
                                                     disabled
