@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Logout from "@/components/Logout";
+import Reset from '@/views/Reset';
 
 import store from '@/store';
 
@@ -61,6 +62,11 @@ Vue.use(VueRouter)
       path: '/logout',
       name: 'Logout',
       component: Logout,
+    },
+    {
+      path: '/reset',
+      name: 'Reset',
+      component: Reset,
     },
 ]
 
