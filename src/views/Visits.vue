@@ -151,7 +151,6 @@
                                                         no-title
                                                         scrollable
                                                         locale="ru-RU"
-                                                        :disabled="editedVisit.status!==0"
                                                 ></v-date-picker>
                                         </v-col>
                                     </v-row>
@@ -334,7 +333,8 @@
                         payment: visit.payment,
                         paymentPlan: visit.paymentPlan,
                         dataBase: visit.dataBase ? 'ПБК' : 'ТЕСТ',
-                        orders: visit.orders
+                        orders: visit.orders,
+                        deliveryDate: visit.deliveryDate
                     }
                 });
             },
